@@ -194,8 +194,16 @@ header{
 .project-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}
 .project-card{min-height:340px;border:1px solid var(--line);padding:28px;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:linear-gradient(135deg,#151a21,#0c1015)}
 .project-card:first-child{min-height:510px}
-.project-card:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,7,9,.9),transparent 65%)}
-.project-content{position:relative;z-index:1}.project-content small{color:var(--blue2);text-transform:uppercase;letter-spacing:.15em;font-size:10px}.project-content h3{font-size:42px;margin-top:6px}
+.project-card:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(5,7,9,.92) 0%,rgba(5,7,9,.45) 42%,rgba(5,7,9,.10) 72%)}
+.project-bg{position:absolute;inset:0;z-index:0;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:0;transform:scale(1.035);transition:opacity 1.1s ease,transform 6s ease;will-change:opacity,transform}
+.project-bg.active{opacity:1;transform:scale(1.09)}
+.project-content{position:relative;z-index:2}.project-content small{color:var(--blue2);text-transform:uppercase;letter-spacing:.15em;font-size:10px}.project-content h3{font-size:42px;margin-top:6px}
+.project-progress{position:absolute;left:28px;right:28px;top:28px;z-index:3;display:flex;gap:6px}
+.project-progress span{height:2px;flex:1;background:rgba(255,255,255,.18);overflow:hidden}
+.project-progress span:after{content:"";display:block;width:100%;height:100%;background:var(--blue2);transform:scaleX(0);transform-origin:left center}
+.project-progress span.active:after{animation:projectTimer 5s linear forwards}
+@keyframes projectTimer{to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){.project-bg{transition:none;transform:none}.project-bg.active{transform:none}.project-progress span.active:after{animation:none;transform:scaleX(1)}}
 .trust{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
 .quote{border-left:2px solid var(--blue);padding:10px 0 10px 28px;font-size:25px;line-height:1.25;color:#e8ebef}
 .quote small{display:block;font-size:11px;color:var(--muted);margin-top:18px;text-transform:uppercase;letter-spacing:.12em}
@@ -718,8 +726,18 @@ footer{padding:35px 0;border-top:1px solid var(--line)}
     <h2 class="reveal">VAGs que passam por aqui.</h2>
     <p class="reveal" style="max-width:600px;margin:18px 0 45px">Nossa estrutura e equipe são preparadas para atender os modelos da Volkswagen e Audi, seguindo os padrões de fábrica para cada procedimento.</p>
     <div class="project-grid">
-      <article class="project-card reveal"><div class="project-content"><small>Galeria principal</small><h3>Projetos & veículos</h3></div></article>
-      <article class="project-card reveal"><div class="project-content"><small>Experiência</small><h3>Detalhe importa.</h3></div></article>
+      <article class="project-card reveal" data-gallery="horizontal">
+        <div class="project-bg active" aria-hidden="true"></div>
+        <div class="project-bg" aria-hidden="true"></div>
+        <div class="project-progress" aria-hidden="true"></div>
+        <div class="project-content"><small>Galeria principal</small><h3>Projetos & veículos</h3></div>
+      </article>
+      <article class="project-card reveal" data-gallery="vertical">
+        <div class="project-bg active" aria-hidden="true"></div>
+        <div class="project-bg" aria-hidden="true"></div>
+        <div class="project-progress" aria-hidden="true"></div>
+        <div class="project-content"><small>Experiência</small><h3>Detalhe importa.</h3></div>
+      </article>
     </div>
   </div>
 </section>
@@ -840,6 +858,78 @@ footer{padding:35px 0;border-top:1px solid var(--line)}
     });
   },{threshold:.12});
   items.forEach(el=>observer.observe(el));
+
+  // Galerias "VAGs que passam por aqui".
+  // Painel maior (esquerda): imagens horizontais em imagens/painel horizontal/
+  // Painel menor (direita): imagens verticais em imagens/painel vertical/
+  // Nomes aceitos em cada pasta: foto1.jpg até foto5.jpg.
+  // Se alguma imagem não existir, ela é simplesmente ignorada.
+  const galleries={
+    horizontal:[
+      'imagens/painel horizontal/foto1.jpg',
+      'imagens/painel horizontal/foto2.jpg',
+      'imagens/painel horizontal/foto3.jpg',
+      'imagens/painel horizontal/foto4.jpg',
+      'imagens/painel horizontal/foto5.jpg'
+    ],
+    vertical:[
+      'imagens/painel vertical/foto1.jpg',
+      'imagens/painel vertical/foto2.jpg',
+      'imagens/painel vertical/foto3.jpg',
+      'imagens/painel vertical/foto4.jpg',
+      'imagens/painel vertical/foto5.jpg'
+    ]
+  };
+
+  const loadExistingImages=(candidates)=>Promise.all(
+    candidates.map(src=>new Promise(resolve=>{
+      const img=new Image();
+      img.onload=()=>resolve(src);
+      img.onerror=()=>resolve(null);
+      img.src=src;
+    }))
+  ).then(results=>results.filter(Boolean));
+
+  document.querySelectorAll('.project-card[data-gallery]').forEach(card=>{
+    const galleryName=card.dataset.gallery;
+    const candidates=galleries[galleryName]||[];
+
+    loadExistingImages(candidates).then(galleryImages=>{
+      if(!galleryImages.length) return;
+
+      const layers=[...card.querySelectorAll('.project-bg')];
+      const progress=card.querySelector('.project-progress');
+      let index=0;
+      let activeLayer=0;
+
+      galleryImages.forEach((_,i)=>{
+        const dot=document.createElement('span');
+        if(i===0) dot.classList.add('active');
+        progress.appendChild(dot);
+      });
+
+      layers[0].style.backgroundImage=`url("${galleryImages[0]}")`;
+
+      if(galleryImages.length===1) return;
+
+      setInterval(()=>{
+        index=(index+1)%galleryImages.length;
+        const nextLayer=activeLayer===0?1:0;
+        layers[nextLayer].style.backgroundImage=`url("${galleryImages[index]}")`;
+        layers[nextLayer].classList.add('active');
+        layers[activeLayer].classList.remove('active');
+        activeLayer=nextLayer;
+
+        [...progress.children].forEach((dot,i)=>{
+          dot.classList.remove('active');
+          if(i===index){
+            void dot.offsetWidth;
+            dot.classList.add('active');
+          }
+        });
+      },5000);
+    });
+  });
 
   // Botões "Agendar serviço": levam ao formulário e já selecionam o serviço.
   document.querySelectorAll('.service-cta').forEach(button=>{
