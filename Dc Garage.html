@@ -767,13 +767,17 @@ footer{padding:35px 0;border-top:1px solid var(--line)}
           <div class="field full"><label for="telefone">Telefone/WhatsApp *</label><input id="telefone" name="telefone" type="tel" inputmode="numeric" maxlength="11" pattern="[0-9]{10,11}" placeholder="(83) 99999-9999" required></div>
           <div class="field full">
             <label for="marca">Marca *</label>
-            <select id="marca" name="marca" required>
+             <select id="marca" name="marca" required>
               <option value="">Selecione a marca do seu carro</option>
               <option>Volkswagen</option>
               <option>Audi</option>
               <option>Porsche</option>
-              <option>Lamborghini</option></div>
-          <div class="field full"><label for="modelo">Modelo, motor, ano e KM aproximado *</label><input id="modelo" name="modelo" type="text" placeholder="Ex.: Jetta GLI 2.0 2022 — 72.000 km" required></div>
+              <option>Lamborghini</option>
+             </select>
+          </div>
+          
+          <div class="field"><label for="modelo">Modelo *</label><input id="modelo" name="modelo" type="text" placeholder="Ex.: Jetta GLI 2.0 2022 — 72.000 km" required></div>
+
           <div class="field full">
             <label for="servico">Serviço *</label>
             <select id="servico" name="servico" required>
