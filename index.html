@@ -779,6 +779,29 @@ button,input,select,textarea{max-width:100%;}
   .testimonial-card{min-height:0;padding:10px 0 10px 22px;font-size:20px}
 }
 
+
+
+/* =========================================================
+   DC GARAGE — FORM CRM / SUCCESS MODAL
+   ========================================================= */
+.submit-status{display:block;margin-top:10px;font-size:11px;color:#7f8996;min-height:18px}
+.form-actions .btn[disabled]{opacity:.65;cursor:not-allowed;transform:none}
+.crm-modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(3,5,8,.82);backdrop-filter:blur(12px)}
+.crm-modal.open{display:flex}
+.crm-modal-card{width:min(520px,100%);background:linear-gradient(145deg,#111720,#090d12);border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 90px rgba(0,0,0,.55);padding:34px;position:relative}
+.crm-modal-card:before{content:"";position:absolute;left:0;top:0;width:4px;height:100%;background:var(--blue)}
+.crm-modal-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--blue2);margin-bottom:12px}
+.crm-modal-card h3{font-size:42px;margin-bottom:12px}
+.crm-modal-card p{font-size:14px;line-height:1.65}
+.crm-protocol{margin:22px 0;padding:15px 16px;border:1px solid rgba(85,153,255,.24);background:rgba(27,111,232,.08)}
+.crm-protocol span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:#788594;margin-bottom:4px}
+.crm-protocol strong{font-family:"Bebas Neue",sans-serif;font-size:29px;letter-spacing:.06em;color:#fff;font-weight:400}
+.crm-modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.crm-modal-actions .btn{flex:1;min-width:180px}
+.crm-modal-close{background:transparent;color:#a6afba}
+.crm-modal-close:hover{border-color:rgba(255,255,255,.26);background:rgba(255,255,255,.04)}
+@media(max-width:520px){.crm-modal{padding:14px}.crm-modal-card{padding:26px 22px}.crm-modal-card h3{font-size:36px}.crm-modal-actions{display:block}.crm-modal-actions .btn{width:100%;margin-top:9px}.crm-modal-actions .btn:first-child{margin-top:0}}
+
 </style>
 </head>
 <body>
@@ -1050,9 +1073,10 @@ button,input,select,textarea{max-width:100%;}
           <div class="field full"><label for="mensagem">Mensagem *</label><textarea id="mensagem" name="mensagem" placeholder="Descreva o caso" required></textarea></div>
         </div>
         <div class="form-actions">
-          <button class="btn btn-primary" type="submit">Enviar solicitação ↗</button>
-          <small>Ao enviar, os dados serão preparados para contato pelo WhatsApp.</small>
+          <button class="btn btn-primary" id="submitRequest" type="submit">Enviar solicitação ↗</button>
+          <small>Ao enviar, sua solicitação será registrada e você poderá continuar pelo WhatsApp.</small>
         </div>
+        <span class="submit-status" id="submitStatus" aria-live="polite"></span>
       </form>
     </div>
   </div>
@@ -1067,6 +1091,22 @@ button,input,select,textarea{max-width:100%;}
   </div>
 </section>
 </main>
+
+<div class="crm-modal" id="successModal" role="dialog" aria-modal="true" aria-labelledby="successTitle" aria-hidden="true">
+  <div class="crm-modal-card">
+    <div class="crm-modal-eyebrow">Solicitação registrada</div>
+    <h3 id="successTitle">Obrigado pelo contato.</h3>
+    <p>Recebemos seus dados e sua solicitação foi registrada. Para dar continuidade ao atendimento, fale com a DC Garage pelo WhatsApp.</p>
+    <div class="crm-protocol">
+      <span>Seu protocolo</span>
+      <strong id="protocolValue">—</strong>
+    </div>
+    <div class="crm-modal-actions">
+      <a class="btn btn-primary" id="continueWhatsApp" href="#" target="_blank" rel="noopener">Continuar no WhatsApp ↗</a>
+      <button class="btn crm-modal-close" id="closeSuccessModal" type="button">Fechar</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="container footer">
@@ -1176,25 +1216,102 @@ button,input,select,textarea{max-width:100%;}
   const form=document.getElementById('contactForm');
   if(form){
     const telefone=document.getElementById('telefone');
+    const submitButton=document.getElementById('submitRequest');
+    const submitStatus=document.getElementById('submitStatus');
+    const successModal=document.getElementById('successModal');
+    const protocolValue=document.getElementById('protocolValue');
+    const continueWhatsApp=document.getElementById('continueWhatsApp');
+    const closeSuccessModal=document.getElementById('closeSuccessModal');
+
+    // Endpoint estável do Web App do Google Apps Script.
+    const crmEndpoint='https://script.google.com/macros/s/AKfycbxbybukDo5MDAnrwHGqpFL6ew7V_nQmh7HqoPTH9PLs2v4AP5sxrdtAD4JKuqhFj6_Wng/exec';
+    const whatsapp='5583991263040';
+
     telefone.addEventListener('input',()=>{
       telefone.value=telefone.value.replace(/\D/g,'').slice(0,11);
     });
 
-    form.addEventListener('submit',(event)=>{
+    const openSuccessModal=(protocol)=>{
+      const message=[
+        'Olá, DC Garage! Acabei de enviar uma solicitação pelo site.','',
+        `Meu protocolo é: ${protocol}`,'',
+        'Gostaria de dar continuidade ao atendimento.'
+      ].join('\n');
+      protocolValue.textContent=protocol;
+      continueWhatsApp.href=`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
+      successModal.classList.add('open');
+      successModal.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    };
+
+    const closeModal=()=>{
+      successModal.classList.remove('open');
+      successModal.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+    };
+
+    closeSuccessModal.addEventListener('click',closeModal);
+    successModal.addEventListener('click',(event)=>{
+      if(event.target===successModal) closeModal();
+    });
+    document.addEventListener('keydown',(event)=>{
+      if(event.key==='Escape' && successModal.classList.contains('open')) closeModal();
+    });
+
+    form.addEventListener('submit',async(event)=>{
       event.preventDefault();
       if(!form.checkValidity()){form.reportValidity();return;}
+
       const data=new FormData(form);
-      const message=[
-        'Olá, DC Garage! Vim pelo site e gostaria de agendar uma avaliação para o meu carro.','',
-        `Nome: ${data.get('nome')}`,
-        `E-mail: ${data.get('email')}`,
-        `Telefone/WhatsApp: ${data.get('telefone')}`,
-        `Veículo: ${data.get('veiculo')}`,
-        `Serviço: ${data.get('servico')}`,
-        `Mensagem: ${data.get('mensagem')}`
-      ].join('\n');
-      const whatsapp='5583991263040';
-      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`,'_blank','noopener');
+      const payload={
+        nome:String(data.get('nome')||'').trim(),
+        email:String(data.get('email')||'').trim(),
+        telefone:String(data.get('telefone')||'').trim(),
+        marca:String(data.get('marca')||'').trim(),
+        modelo:String(data.get('modelo')||'').trim(),
+        servico:String(data.get('servico')||'').trim(),
+        mensagem:String(data.get('mensagem')||'').trim(),
+        origem:'Site DC Garage',
+        url:window.location.href
+      };
+
+      submitButton.disabled=true;
+      submitButton.textContent='Enviando...';
+      submitStatus.textContent='Registrando sua solicitação. Aguarde...';
+
+      try{
+        const body=new URLSearchParams(payload);
+        const response=await fetch(crmEndpoint,{
+          method:'POST',
+          headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+          body:body.toString(),
+          redirect:'follow'
+        });
+
+        const raw=await response.text();
+        let result={};
+        try{ result=JSON.parse(raw); }catch(_){
+          const match=raw.match(/DCG-\d{8}-\d{3,}/i);
+          if(match) result.protocolo=match[0];
+        }
+
+        const protocol=result.protocolo||result.protocol;
+        const ok=result.ok===true || result.success===true || !!protocol;
+        if(!response.ok || !ok || !protocol){
+          throw new Error(result.error||result.message||'O servidor não devolveu um protocolo válido.');
+        }
+
+        form.reset();
+        submitStatus.textContent='Solicitação registrada com sucesso.';
+        openSuccessModal(protocol);
+      }catch(error){
+        console.error('Erro ao registrar solicitação:',error);
+        submitStatus.textContent='Não foi possível registrar agora. Tente novamente em instantes.';
+        alert('Não conseguimos registrar sua solicitação no momento. Por favor, tente novamente.');
+      }finally{
+        submitButton.disabled=false;
+        submitButton.textContent='Enviar solicitação ↗';
+      }
     });
   }
 })();
