@@ -181,15 +181,20 @@ header{
 .process-row strong{font-size:12px;color:var(--blue2);letter-spacing:.1em}.process-row span{font-size:14px;color:#d2d7de}
 .tech-visual{
   min-height:470px;border:1px solid var(--line);position:relative;overflow:hidden;
-  background:radial-gradient(circle at 60% 45%,rgba(27,111,232,.25),transparent 33%),#0b0e13
+  background:#0b0e13
 }
-.tech-visual:before{
-  content:"DC";position:absolute;font-family:"Bebas Neue";font-size:270px;color:rgba(255,255,255,.025);
-  right:-15px;bottom:-50px;line-height:1
+.tech-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+  z-index:0;background:#0b0e13
 }
-.tech-tag{position:absolute;left:28px;top:28px;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--blue2)}
-.tech-box{position:absolute;left:28px;right:28px;bottom:28px;border-top:1px solid var(--line);padding-top:16px}
-.tech-box strong{font-family:"Bebas Neue";font-size:34px;font-weight:400}
+.tech-visual:after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(4,7,11,.20) 0%,rgba(4,7,11,.05) 42%,rgba(4,7,11,.82) 100%)
+}
+.tech-tag{position:absolute;left:28px;top:28px;z-index:2;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--blue2);text-shadow:0 2px 12px rgba(0,0,0,.7)}
+.tech-box{position:absolute;left:28px;right:28px;bottom:28px;z-index:2;border-top:1px solid rgba(255,255,255,.18);padding-top:16px}
+.tech-box strong{font-family:"Bebas Neue";font-size:34px;font-weight:400;text-shadow:0 2px 14px rgba(0,0,0,.8)}
+.tech-box p{text-shadow:0 2px 12px rgba(0,0,0,.8)}
 .projects{background:#0a0d11}
 .project-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}
 .project-card{min-height:340px;border:1px solid var(--line);padding:28px;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:linear-gradient(135deg,#151a21,#0c1015)}
@@ -714,6 +719,10 @@ footer{padding:35px 0;border-top:1px solid var(--line)}
       </div>
     </div>
     <div class="tech-visual reveal">
+      <!-- Vídeo da seção Método: coloque o arquivo em Video/video.mp4 -->
+      <video class="tech-video" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo técnico da DC Garage">
+        <source src="Video/video.mp4" type="video/mp4">
+      </video>
       <span class="tech-tag">DC Garage / Technical</span>
       <div class="tech-box"><strong>PRECISÃO EM CADA ETAPA.</strong><p>Equipamento, conhecimento e procedimento.</p></div>
     </div>
