@@ -580,6 +580,159 @@ footer{padding:35px 0;border-top:1px solid var(--line)}
   margin-top:16px;
   flex:0 0 auto;
 }
+
+
+/* =========================================================
+   DC GARAGE — MOBILE / RESPONSIVE HARDENING
+   ========================================================= */
+img,video,iframe{max-width:100%;}
+img{height:auto;}
+button,input,select,textarea{max-width:100%;}
+
+@media(max-width:1100px){
+  :root{--max:980px}
+  .navlinks{gap:18px;font-size:11px}
+  .hero-inner{max-width:760px}
+  .hero h1{font-size:clamp(64px,10vw,118px)}
+  .service-grid{grid-template-columns:repeat(2,1fr)}
+  .features{grid-template-columns:repeat(3,1fr)}
+  .contact-grid{gap:38px}
+}
+
+@media(max-width:850px){
+  html{scroll-padding-top:70px}
+  .container{width:min(var(--max),calc(100% - 28px))}
+  .section{padding:76px 0}
+  header{background:rgba(8,10,13,.82)}
+  .nav{height:68px;gap:10px}
+  .logo{font-size:27px;white-space:nowrap}
+  .navlinks{display:none}
+  .nav-cta{min-height:40px;padding:0 13px;font-size:10px;letter-spacing:.05em}
+
+  .hero{min-height:100svh;align-items:flex-end}
+  .hero-video{object-position:center center}
+  .hero-overlay{background:
+    linear-gradient(90deg,rgba(5,7,9,.94) 0%,rgba(5,7,9,.74) 58%,rgba(5,7,9,.54) 100%),
+    linear-gradient(0deg,rgba(5,7,9,.98) 0%,rgba(5,7,9,.28) 70%),
+    radial-gradient(circle at 55% 42%,rgba(27,111,232,.10),transparent 40%)}
+  .hero:after{display:none}
+  .hero-inner{padding:118px 0 42px;max-width:none;width:100%}
+  .hero h1{font-size:clamp(54px,16vw,88px);line-height:.9;max-width:100%}
+  .hero-sub{font-size:15px;line-height:1.55;margin:20px 0 24px;max-width:95%}
+  .actions{display:block}
+  .actions .btn{width:100%;min-height:52px;padding:0 16px}
+  .hero-meta{margin-top:30px;padding-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .hero-meta div{padding:8px 10px 8px 0;border-right:0;border-bottom:1px solid var(--line);font-size:10px}
+  .hero-meta div:nth-last-child(-n+2){border-bottom:0}
+
+  .brand-specialization{padding:64px 0 58px}
+  .brand-specialization-head{grid-template-columns:1fr;gap:18px;margin-bottom:28px}
+  .brand-specialization-head h2{font-size:clamp(42px,13vw,58px);line-height:.94}
+  .brand-specialization-head p{font-size:14px;max-width:none}
+  .brand-showcase{grid-template-columns:1fr}
+  .brand-card{min-height:250px;padding:24px 22px}
+  .audi-mark,.vw-mark{height:135px}
+  .vw-mark,.vw-logo-image{width:135px;height:135px}
+  .audi-mark{transform:scale(.78)}
+  .brand-divider{min-height:52px;border-left:0;border-right:0;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
+  .brand-divider:before,.brand-divider:after{display:none}
+
+  .intro-grid,.tech-grid,.trust,.project-grid,.contact-grid{grid-template-columns:1fr;gap:30px}
+  .intro-grid{align-items:start}
+  h2{font-size:clamp(42px,13vw,60px)}
+  .intro-copy p,.tech-copy p{font-size:15px}
+
+  .features{grid-template-columns:1fr;gap:1px;margin-top:38px}
+  .feature{padding:26px 22px;min-height:0}
+  .feature-num{margin-bottom:18px}
+  .feature h3{font-size:28px}
+
+  .services-head{display:block;margin-bottom:30px}
+  .services-head p{margin-top:16px}
+  .service-grid{grid-template-columns:1fr;gap:12px}
+  .service{min-height:0;padding:24px 22px}
+  .service-icon{width:46px;height:46px;margin-bottom:20px}
+  .service h3{font-size:31px}
+  .service p{font-size:13px;max-width:none;padding-bottom:18px}
+  .service-cta{opacity:1;transform:none;pointer-events:auto;width:100%;margin-top:18px}
+
+  .process-row{grid-template-columns:42px 1fr;gap:12px;padding:16px 0}
+  .process-row span{font-size:13px}
+  .tech-visual{min-height:0;aspect-ratio:3/2}
+  .tech-tag{left:18px;top:18px;font-size:9px}
+  .tech-box{left:18px;right:18px;bottom:18px;padding-top:12px}
+  .tech-box strong{font-size:28px}
+  .tech-box p{font-size:13px}
+
+  .project-grid{gap:12px}
+  .project-card,.project-card:first-child{min-height:0}
+  .project-card[data-gallery="horizontal"]{aspect-ratio:3/2}
+  .project-card[data-gallery="vertical"]{aspect-ratio:3/4}
+  .project-card{padding:20px}
+  .project-progress{left:20px;right:20px;top:20px}
+  .project-content h3{font-size:34px}
+
+  .quote{font-size:22px;padding-left:20px}
+  .cta{padding:78px 0}
+
+  .contact-grid{gap:28px}
+  .contact-map{min-height:220px}
+  .contact-map iframe{height:220px}
+  .contact-detail{align-items:flex-start}
+  .form-card{padding:22px}
+  .form-card h3{font-size:34px}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .field input,.field select,.field textarea{font-size:16px}
+  .form-actions .btn{width:100%}
+
+  .footer{display:block;text-align:center}
+  .footer-info{justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .float-wa{right:14px;bottom:14px;width:52px;height:52px}
+}
+
+@media(max-width:520px){
+  .container{width:calc(100% - 22px)}
+  .section{padding:62px 0}
+  .nav{height:64px}
+  .logo{font-size:25px}
+  .nav-cta{padding:0 10px;font-size:9px;min-height:38px}
+  .hero-inner{padding:104px 0 32px}
+  .hero h1{font-size:clamp(50px,16.5vw,72px)}
+  .hero-sub{font-size:14px;max-width:100%}
+  .eyebrow{font-size:10px;letter-spacing:.17em}
+  .hero-meta{grid-template-columns:1fr 1fr}
+  .hero-meta div{font-size:9px}
+  h2{font-size:clamp(39px,14vw,52px)}
+  .brand-card{min-height:230px}
+  .brand-specialization-foot{gap:10px;letter-spacing:.12em;text-align:center}
+  .brand-specialization-foot .line{width:28px}
+  .tech-visual{aspect-ratio:4/3}
+  .project-card[data-gallery="horizontal"]{aspect-ratio:4/3}
+  .project-card[data-gallery="vertical"]{aspect-ratio:3/4}
+  .project-content h3{font-size:31px}
+  .contact-detail{display:block}
+  .contact-detail span:last-child{display:block;text-align:left;margin-top:6px}
+  .form-card{padding:18px}
+}
+
+@media(max-width:380px){
+  .container{width:calc(100% - 18px)}
+  .logo{font-size:23px}
+  .nav-cta{padding:0 8px;font-size:8.5px}
+  .hero h1{font-size:clamp(46px,17vw,64px)}
+  .hero-meta{grid-template-columns:1fr}
+  .hero-meta div{border-bottom:1px solid var(--line)!important;padding:7px 0}
+  .hero-meta div:last-child{border-bottom:0!important}
+  .tech-box strong{font-size:24px}
+  .project-content h3{font-size:28px}
+}
+
+@media(orientation:landscape) and (max-height:520px) and (max-width:950px){
+  .hero{min-height:640px}
+  .hero-inner{padding-top:100px}
+}
+
 </style>
 </head>
 <body>
@@ -686,32 +839,32 @@ footer{padding:35px 0;border-top:1px solid var(--line)}
     </div>
     <div class="service-grid">
       <article class="service reveal">
-        <div class="service-icon"><img src="../imagens/motor.png" alt="" loading="lazy"></div><h3>Diagnóstico</h3>
+        <div class="service-icon"><img src="imagens/motor.png" alt="" loading="lazy"></div><h3>Diagnóstico</h3>
         <p>Leitura e investigação de falhas para chegar até a causa do problema real.</p>
         <a class="service-cta" href="#contato" data-service="Diagnóstico">Agendar serviço</a>
       </article>
       <article class="service reveal">
-        <div class="service-icon"><img src="../imagens/lista%20de%20tarefas.png" alt="" loading="lazy"></div><h3>Revisão</h3>
+        <div class="service-icon"><img src="imagens/lista%20de%20tarefas.png" alt="" loading="lazy"></div><h3>Revisão</h3>
         <p>Manutenção preventiva e corretiva para manter o veículo em dia.</p>
         <a class="service-cta" href="#contato" data-service="Revisão">Agendar serviço</a>
       </article>
       <article class="service reveal">
-        <div class="service-icon"><img src="../imagens/cambio.png" alt="" loading="lazy"></div><h3>Câmbio VAG</h3>
+        <div class="service-icon"><img src="imagens/cambio.png" alt="" loading="lazy"></div><h3>Câmbio VAG</h3>
         <p>Diagnóstico e serviços no conjunto de transmissão, conforme a necessidade do seu VAG.</p>
         <a class="service-cta" href="#contato" data-service="Câmbio DSG">Agendar serviço</a>
       </article>
       <article class="service reveal">
-        <div class="service-icon"><img src="../imagens/remap.png" alt="" loading="lazy"></div><h3>Remap</h3>
+        <div class="service-icon"><img src="imagens/remap.png" alt="" loading="lazy"></div><h3>Remap</h3>
         <p>Soluções/ajustes de software e performance quando aplicáveis ao projeto.</p>
         <a class="service-cta" href="#contato" data-service="Remap">Agendar serviço</a>
       </article>
       <article class="service reveal">
-        <div class="service-icon"><img src="../imagens/eletronica.png" alt="" loading="lazy"></div><h3>Eletrônica</h3>
+        <div class="service-icon"><img src="imagens/eletronica.png" alt="" loading="lazy"></div><h3>Eletrônica</h3>
         <p>Investigação e reparo de sistemas eletrônicos e módulos.</p>
         <a class="service-cta" href="#contato" data-service="Eletrônica">Agendar serviço</a>
       </article>
       <article class="service reveal">
-        <div class="service-icon"><img src="../imagens/preventiva.png" alt="" loading="lazy"></div><h3>Preventiva e Corretiva</h3>
+        <div class="service-icon"><img src="imagens/preventiva.png" alt="" loading="lazy"></div><h3>Preventiva e Corretiva</h3>
         <p>Cuidados programados para reduzir surpresas e preservar o conjunto.</p>
         <a class="service-cta" href="#contato" data-service="Preventiva e Corretiva">Agendar serviço</a>
       </article>
