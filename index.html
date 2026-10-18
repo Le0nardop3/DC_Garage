@@ -1077,7 +1077,7 @@ button,input,select,textarea{max-width:100%;}
         </div>
         <div class="form-actions">
           <button class="btn btn-primary" id="submitRequest" type="submit">Enviar solicitação ↗</button>
-          <small>Ao enviar, sua solicitação será registrada e você poderá continuar pelo WhatsApp.</small>
+          <small>Ao clicar, o WhatsApp será aberto com uma mensagem pronta para você enviar.</small>
         </div>
         <span class="submit-status" id="submitStatus" aria-live="polite"></span>
       </form>
@@ -1122,6 +1122,7 @@ button,input,select,textarea{max-width:100%;}
       <a href="#lgpd">LGPD</a>
     </nav>
     <div class="footer-address">
+      <strong>DANIEL PESSOA VASCONCELOS DE CASTRO LTDA</strong>
       <span>CNPJ: 49.481.488/0001-05</span>
       <span>Rua Santa Verônica, 189 — Renascer</span>
       <span>Cabedelo / PB</span>
@@ -1239,92 +1240,33 @@ document.getElementById('footerYear').textContent = new Date().getFullYear();
   if(form){
     const submitButton=document.getElementById('submitRequest');
     const submitStatus=document.getElementById('submitStatus');
-    const successModal=document.getElementById('successModal');
-    const protocolValue=document.getElementById('protocolValue');
-    const continueWhatsApp=document.getElementById('continueWhatsApp');
-    const closeSuccessModal=document.getElementById('closeSuccessModal');
-
-    // Endpoint estável do Web App do Google Apps Script.
-    const crmEndpoint='https://script.google.com/macros/s/AKfycbxbybukDo5MDAnrwHGqpFL6ew7V_nQmh7HqoPTH9PLs2v4AP5sxrdtAD4JKuqhFj6_Wng/exec';
     const whatsapp='5583991263040';
 
-    const openSuccessModal=(protocol)=>{
-      const message=[
-        'Olá, DC Garage! Acabei de enviar uma solicitação pelo site.','',
-        `Meu protocolo é: ${protocol}`,'',
-        'Gostaria de dar continuidade ao atendimento.'
-      ].join('\n');
-      protocolValue.textContent=protocol;
-      continueWhatsApp.href=`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
-      successModal.classList.add('open');
-      successModal.setAttribute('aria-hidden','false');
-      document.body.style.overflow='hidden';
-    };
-
-    const closeModal=()=>{
-      successModal.classList.remove('open');
-      successModal.setAttribute('aria-hidden','true');
-      document.body.style.overflow='';
-    };
-
-    closeSuccessModal.addEventListener('click',closeModal);
-    successModal.addEventListener('click',(event)=>{
-      if(event.target===successModal) closeModal();
-    });
-    document.addEventListener('keydown',(event)=>{
-      if(event.key==='Escape' && successModal.classList.contains('open')) closeModal();
-    });
-
-    form.addEventListener('submit',async(event)=>{
+    form.addEventListener('submit',(event)=>{
       event.preventDefault();
       if(!form.checkValidity()){form.reportValidity();return;}
 
       const data=new FormData(form);
-      const payload={
-        nome:String(data.get('nome')||'').trim(),
-        modelo:String(data.get('modelo')||'').trim(),
-        servico:String(data.get('servico')||'').trim(),
-        origem:'Site DC Garage',
-        url:window.location.href
-      };
+      const nome=String(data.get('nome')||'').trim();
+      const modelo=String(data.get('modelo')||'').trim();
+      const servico=String(data.get('servico')||'').trim();
+      const message=[
+        'Olá, DC Garage! Gostaria de solicitar um atendimento.','',
+        `*Nome:* ${nome}`,
+        `*Marca e modelo:* ${modelo}`,
+        `*Serviço desejado:* ${servico}`,'',
+        'Enviei estas informações pelo formulário do site e gostaria de continuar o atendimento.'
+      ].join('\n');
 
+      const url=`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
       submitButton.disabled=true;
-      submitButton.textContent='Enviando...';
-      submitStatus.textContent='Registrando sua solicitação. Aguarde...';
-
-      try{
-        const body=new URLSearchParams(payload);
-        const response=await fetch(crmEndpoint,{
-          method:'POST',
-          headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-          body:body.toString(),
-          redirect:'follow'
-        });
-
-        const raw=await response.text();
-        let result={};
-        try{ result=JSON.parse(raw); }catch(_){
-          const match=raw.match(/DCG-\d{8}-\d{3,}/i);
-          if(match) result.protocolo=match[0];
-        }
-
-        const protocol=result.protocolo||result.protocol;
-        const ok=result.ok===true || result.success===true || !!protocol;
-        if(!response.ok || !ok || !protocol){
-          throw new Error(result.error||result.message||'O servidor não devolveu um protocolo válido.');
-        }
-
-        form.reset();
-        submitStatus.textContent='Solicitação registrada com sucesso.';
-        openSuccessModal(protocol);
-      }catch(error){
-        console.error('Erro ao registrar solicitação:',error);
-        submitStatus.textContent='Não foi possível registrar agora. Tente novamente em instantes.';
-        alert('Não conseguimos registrar sua solicitação no momento. Por favor, tente novamente.');
-      }finally{
+      submitButton.textContent='Abrindo WhatsApp...';
+      submitStatus.textContent='Abrindo o WhatsApp com sua mensagem pronta...';
+      window.location.href=url;
+      window.setTimeout(()=>{
         submitButton.disabled=false;
         submitButton.textContent='Enviar solicitação ↗';
-      }
+      },1500);
     });
   }
 })();
