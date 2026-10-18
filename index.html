@@ -224,10 +224,22 @@ header{
 .cta{padding:110px 0;background:radial-gradient(circle at 50% 0%,rgba(27,111,232,.20),transparent 50%),#0b0f14;text-align:center;border-top:1px solid var(--line)}
 .cta h2{max-width:850px;margin:0 auto 24px}
 .cta p{max-width:590px;margin:0 auto 30px}
-footer{padding:35px 0;border-top:1px solid var(--line)}
-.footer{display:flex;justify-content:space-between;gap:25px;align-items:center;flex-wrap:wrap}
-.footer-brand{font-family:"Bebas Neue";font-size:28px;letter-spacing:.08em}
-.footer-info{display:flex;gap:22px;color:#858f9d;font-size:12px}
+/* Rodapé minimalista inspirado na referência enviada */
+.footer-showcase{position:relative;isolation:isolate;overflow:hidden;background:#030405;border-top:1px solid rgba(255,255,255,.08);color:#f4f5f7}
+.footer-showcase:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 12% 0%,rgba(27,111,232,.10),transparent 42%)}
+.footer-layout{padding:42px 0 30px;display:grid;grid-template-columns:1fr auto;column-gap:36px;row-gap:30px;align-items:start}
+.footer-heading{grid-column:1;grid-row:1}
+.footer-brand{font-family:"Bebas Neue";font-size:34px;letter-spacing:.18em;line-height:1;color:#f5f5f5}
+.footer-brand span{color:var(--blue2)}
+.footer-tagline{margin-top:42px;color:#f0f0f0;font-size:13px;letter-spacing:.01em;text-transform:none}
+.footer-legal{grid-column:2;grid-row:1;display:flex;align-items:center;justify-content:flex-end;gap:32px;min-height:38px;font-size:12px;color:#e1e4e8}
+.footer-legal a,.footer-instagram{transition:color .2s ease}
+.footer-legal a:hover,.footer-instagram:hover{color:var(--blue2)}
+.footer-address{grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:7px;color:#e4e6e9;font-size:13px;line-height:1.5}
+.footer-address strong{font-size:14px;font-weight:600;margin-bottom:2px;max-width:440px}
+.footer-instagram{grid-column:2;grid-row:2;justify-self:end;align-self:center;display:flex;align-items:center;gap:10px;color:#a9adb4;font-size:10px;letter-spacing:.24em;text-transform:uppercase}
+.footer-instagram svg{width:22px;height:22px}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.10);padding:16px 0 20px;display:flex;justify-content:flex-start;gap:18px;flex-wrap:wrap;color:#858a92;font-size:10px;letter-spacing:.04em}
 .float-wa{
   position:fixed;right:22px;bottom:22px;z-index:25;width:56px;height:56px;border-radius:50%;
   display:grid;place-items:center;background:#1fbf6b;color:#fff;font-weight:800;
@@ -686,8 +698,12 @@ button,input,select,textarea{max-width:100%;}
   .field input,.field select,.field textarea{font-size:16px}
   .form-actions .btn{width:100%}
 
-  .footer{display:block;text-align:center}
-  .footer-info{justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .footer-layout{grid-template-columns:1fr;row-gap:24px;text-align:left;padding-top:34px}
+  .footer-heading,.footer-legal,.footer-address,.footer-instagram{grid-column:1;grid-row:auto}
+  .footer-tagline{margin-top:28px}
+  .footer-legal{justify-content:flex-start;flex-wrap:wrap;gap:20px}
+  .footer-instagram{justify-self:start}
+  .footer-bottom{justify-content:flex-start;text-align:left}
   .float-wa{right:14px;bottom:14px;width:52px;height:52px}
 }
 
@@ -816,7 +832,7 @@ button,input,select,textarea{max-width:100%;}
       <a href="#metodo">Método</a>
       <a href="#contato">Contato</a>
     </div>
-    <a class="btn btn-primary nav-cta" href="https://wa.me/" target="_blank" rel="noopener">Agendar Avaliação</a>
+    <a class="btn btn-primary nav-cta" href="#contato">Agendar Avaliação</a>
   </nav>
 </header>
 
@@ -832,7 +848,7 @@ button,input,select,textarea{max-width:100%;}
     <h1>Seu VAG merece <em>especialização</em></h1>
     <p class="hero-sub">Diagnóstico, manutenção e soluções especializadas para Volkswagen e Audi em João Pessoa e região — com conhecimento técnico para identificar o problema antes de sair trocando peças.</p>
     <div class="actions">
-      <a class="btn btn-primary" href="https://wa.me/" target="_blank" rel="noopener">Quero agendar uma avaliação ↗</a>
+      <a class="btn btn-primary" href="#contato">Quero agendar uma avaliação ↗</a>
       <!-- <a class="btn btn-ghost" href="#servicos">Conhecer a oficina ↓</a> -->
     </div>
     <div class="hero-meta"> 
@@ -1087,7 +1103,7 @@ button,input,select,textarea{max-width:100%;}
     <div class="eyebrow">Fale com a DC Garage</div>
     <h2>Seu carro está precisando de atenção?</h2>
     <p>Agende uma avaliação e descubra a causa do problema antes de gastar com peças desnecessárias.</p>
-    <a class="btn btn-primary" href="https://wa.me/" target="_blank" rel="noopener">Falar pelo WhatsApp ↗</a>
+    <a class="btn btn-primary" href="https://wa.me/558391263040?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20DC%20Garage%20e%20gostaria%20de%20falar%20com%20a%20equipe%20sobre%20meu%20ve%C3%ADculo." target="_blank" rel="noopener">Falar pelo WhatsApp ↗</a>
   </div>
 </section>
 </main>
@@ -1108,16 +1124,36 @@ button,input,select,textarea{max-width:100%;}
   </div>
 </div>
 
-<footer>
-  <div class="container footer">
-    <div class="footer-brand">DC GARAGE</div>
-    <div class="footer-info"><span>João Pessoa / Cabedelo — PB</span><span>@dcgaragejp</span><span>WhatsApp</span></div>
+<footer class="footer-showcase">
+  <div class="container footer-layout">
+    <div class="footer-heading">
+      <div class="footer-brand">DC <span>GARAGE</span></div>
+      <div class="footer-tagline">Especialistas em Volkswagen e Audi</div>
+    </div>
+    <nav class="footer-legal" aria-label="Links legais">
+      <a href="#politica-de-privacidade">Política de privacidade</a>
+      <a href="#lgpd">LGPD</a>
+    </nav>
+    <div class="footer-address">
+      <strong>DANIEL PESSOA VASCONCELOS DE CASTRO LTDA</strong>
+      <span>CNPJ: 49.481.488/0001-05</span>
+      <span>Rua Santa Verônica, 189 — Renascer</span>
+      <span>Cabedelo / PB</span>
+    </div>
+    <a class="footer-instagram" href="https://instagram.com/dcgaragejp" target="_blank" rel="noopener" aria-label="Instagram da DC Garage">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.8" r="1.2" fill="currentColor"/></svg>
+      <span>Instagram</span>
+    </a>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="footerYear">2026</span> DC Garage. Todos os direitos reservados.</span>
   </div>
 </footer>
 
-<a class="float-wa" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Abrir WhatsApp">WA</a>
+<a class="float-wa" href="https://wa.me/558391263040?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20DC%20Garage%20e%20gostaria%20de%20falar%20com%20a%20equipe%20sobre%20meu%20ve%C3%ADculo." target="_blank" rel="noopener" aria-label="Abrir WhatsApp">WA</a>
 
 <script>
+document.getElementById('footerYear').textContent = new Date().getFullYear();
 (function(){
   const items=document.querySelectorAll('.reveal');
   const observer=new IntersectionObserver((entries)=>{
