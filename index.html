@@ -1055,9 +1055,16 @@ button,input,select,textarea{max-width:100%;}
 
       <form id="contactForm">
         <div class="form-grid">
-          <div class="field"><label for="nome">Nome *</label><input id="nome" name="nome" type="text" autocomplete="name" required></div>
-          
-          <div class="field full"><label for="modelo">Marca e modelo *</label><input id="modelo" name="modelo" type="text" placeholder="Ex.: Volkswagen Jetta GLI 2.0 2022 — 72.000 km" required></div>
+          <div class="field"><label for="nome" >Nome *</label><input id="nome" name="nome" type="text" autocomplete="name" required></div>
+          <div class="field"><label for="marca">Marca *</label><select id="marca" name="marca" required>
+            <option value="" selected disabled>Selecione a marca do seu carro</option>
+            <option value="Volkswagen">Volkswagen</option>
+            <option value="Audi">Audi</option>
+            <option value="Porsche">Porsche</option>
+            <option value="Lamborghini">Lamborghini</option>
+          </select></div>
+
+          <div class="field full"><label for="modelo">Modelo *</label><input id="modelo" name="modelo" type="text" placeholder="Ex.: Jetta GLI 2.0 2022 — 72.000 km" required></div>
 
           <div class="field full">
             <label for="servico">Serviço *</label>
@@ -1122,7 +1129,6 @@ button,input,select,textarea{max-width:100%;}
       <a href="#lgpd">LGPD</a>
     </nav>
     <div class="footer-address">
-      <strong>DANIEL PESSOA VASCONCELOS DE CASTRO LTDA</strong>
       <span>CNPJ: 49.481.488/0001-05</span>
       <span>Rua Santa Verônica, 189 — Renascer</span>
       <span>Cabedelo / PB</span>
@@ -1248,12 +1254,14 @@ document.getElementById('footerYear').textContent = new Date().getFullYear();
 
       const data=new FormData(form);
       const nome=String(data.get('nome')||'').trim();
+      const marca=String(data.get('marca')||'').trim();
       const modelo=String(data.get('modelo')||'').trim();
       const servico=String(data.get('servico')||'').trim();
       const message=[
         'Olá, DC Garage! Gostaria de solicitar um atendimento.','',
         `*Nome:* ${nome}`,
-        `*Marca e modelo:* ${modelo}`,
+        `*Marca:* ${marca}`,
+        `*Modelo:* ${modelo}`,
         `*Serviço desejado:* ${servico}`,'',
         'Enviei estas informações pelo formulário do site e gostaria de continuar o atendimento.'
       ].join('\n');
