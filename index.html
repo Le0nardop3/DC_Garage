@@ -266,7 +266,7 @@ header{
 }
 
 .contact-section{background:#080b0f;border-top:1px solid var(--line)}
-.contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:55px;align-items:stretch}
+.contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:55px;align-items:start}
 .contact-intro{padding:10px 0}
 .contact-intro p{font-size:16px;max-width:490px;margin-top:22px}
 .contact-details{margin-top:30px;border-top:1px solid var(--line)}
@@ -1056,20 +1056,8 @@ button,input,select,textarea{max-width:100%;}
       <form id="contactForm">
         <div class="form-grid">
           <div class="field"><label for="nome">Nome *</label><input id="nome" name="nome" type="text" autocomplete="name" required></div>
-          <div class="field"><label for="email">E-mail *</label><input id="email" name="email" type="email" autocomplete="email" required></div>
-          <div class="field full"><label for="telefone">Telefone/WhatsApp *</label><input id="telefone" name="telefone" type="tel" inputmode="numeric" maxlength="11" pattern="[0-9]{10,11}" placeholder="(83) 99999-9999" required></div>
-          <div class="field full">
-            <label for="marca">Marca *</label>
-             <select id="marca" name="marca" required>
-              <option value="">Selecione a marca do seu carro</option>
-              <option>Volkswagen</option>
-              <option>Audi</option>
-              <option>Porsche</option>
-              <option>Lamborghini</option>
-             </select>
-          </div>
           
-          <div class="field"><label for="modelo">Modelo *</label><input id="modelo" name="modelo" type="text" placeholder="Ex.: Jetta GLI 2.0 2022 — 72.000 km" required></div>
+          <div class="field full"><label for="modelo">Marca e modelo *</label><input id="modelo" name="modelo" type="text" placeholder="Ex.: Volkswagen Jetta GLI 2.0 2022 — 72.000 km" required></div>
 
           <div class="field full">
             <label for="servico">Serviço *</label>
@@ -1086,7 +1074,6 @@ button,input,select,textarea{max-width:100%;}
               <option>Outros...</option>
             </select>
           </div>
-          <div class="field full"><label for="mensagem">Mensagem *</label><textarea id="mensagem" name="mensagem" placeholder="Descreva o caso" required></textarea></div>
         </div>
         <div class="form-actions">
           <button class="btn btn-primary" id="submitRequest" type="submit">Enviar solicitação ↗</button>
@@ -1135,6 +1122,7 @@ button,input,select,textarea{max-width:100%;}
       <a href="#lgpd">LGPD</a>
     </nav>
     <div class="footer-address">
+      <strong>DANIEL PESSOA VASCONCELOS DE CASTRO LTDA</strong>
       <span>CNPJ: 49.481.488/0001-05</span>
       <span>Rua Santa Verônica, 189 — Renascer</span>
       <span>Cabedelo / PB</span>
@@ -1250,7 +1238,6 @@ document.getElementById('footerYear').textContent = new Date().getFullYear();
 
   const form=document.getElementById('contactForm');
   if(form){
-    const telefone=document.getElementById('telefone');
     const submitButton=document.getElementById('submitRequest');
     const submitStatus=document.getElementById('submitStatus');
     const successModal=document.getElementById('successModal');
@@ -1261,10 +1248,6 @@ document.getElementById('footerYear').textContent = new Date().getFullYear();
     // Endpoint estável do Web App do Google Apps Script.
     const crmEndpoint='https://script.google.com/macros/s/AKfycbxbybukDo5MDAnrwHGqpFL6ew7V_nQmh7HqoPTH9PLs2v4AP5sxrdtAD4JKuqhFj6_Wng/exec';
     const whatsapp='5583991263040';
-
-    telefone.addEventListener('input',()=>{
-      telefone.value=telefone.value.replace(/\D/g,'').slice(0,11);
-    });
 
     const openSuccessModal=(protocol)=>{
       const message=[
@@ -1300,12 +1283,8 @@ document.getElementById('footerYear').textContent = new Date().getFullYear();
       const data=new FormData(form);
       const payload={
         nome:String(data.get('nome')||'').trim(),
-        email:String(data.get('email')||'').trim(),
-        telefone:String(data.get('telefone')||'').trim(),
-        marca:String(data.get('marca')||'').trim(),
         modelo:String(data.get('modelo')||'').trim(),
         servico:String(data.get('servico')||'').trim(),
-        mensagem:String(data.get('mensagem')||'').trim(),
         origem:'Site DC Garage',
         url:window.location.href
       };
