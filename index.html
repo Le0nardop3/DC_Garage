@@ -818,6 +818,10 @@ button,input,select,textarea{max-width:100%;}
 .crm-modal-close:hover{border-color:rgba(255,255,255,.26);background:rgba(255,255,255,.04)}
 @media(max-width:520px){.crm-modal{padding:14px}.crm-modal-card{padding:26px 22px}.crm-modal-card h3{font-size:36px}.crm-modal-actions{display:block}.crm-modal-actions .btn{width:100%;margin-top:9px}.crm-modal-actions .btn:first-child{margin-top:0}}
 
+
+.privacy-notice{font-size:12px;line-height:1.65;margin:18px 0 8px;color:var(--muted)}
+.privacy-notice a{color:var(--blue2);text-decoration:underline;text-underline-offset:3px}
+.privacy-notice a:hover{color:#fff}
 </style>
 </head>
 <body>
@@ -1082,9 +1086,10 @@ button,input,select,textarea{max-width:100%;}
             </select>
           </div>
         </div>
+        <p class="privacy-notice">Ao continuar, seus dados serão usados para preparar uma mensagem de atendimento no WhatsApp. Consulte nossa <a href="politica-de-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
         <div class="form-actions">
           <button class="btn btn-primary" id="submitRequest" type="submit">Enviar solicitação ↗</button>
-          <small>Ao clicar, o WhatsApp será aberto com uma mensagem pronta para você enviar.</small>
+          <small>O WhatsApp será aberto com uma mensagem pronta. Você decide se deseja enviá-la.</small>
         </div>
         <span class="submit-status" id="submitStatus" aria-live="polite"></span>
       </form>
@@ -1125,8 +1130,8 @@ button,input,select,textarea{max-width:100%;}
       <div class="footer-tagline">Especialistas em Volkswagen e Audi</div>
     </div>
     <nav class="footer-legal" aria-label="Links legais">
-      <a href="#politica-de-privacidade">Política de privacidade</a>
-      <a href="#lgpd">LGPD</a>
+      <a href="politica-de-privacidade.html">Política de Privacidade</a>
+      <a href="politica-de-privacidade.html#lgpd">LGPD</a>
     </nav>
     <div class="footer-address">
       <span>CNPJ: 49.481.488/0001-05</span>
